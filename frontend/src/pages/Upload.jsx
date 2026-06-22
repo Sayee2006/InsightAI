@@ -1,21 +1,43 @@
 import { useState } from "react";
 import Layout from "../components/Layout";
+import { uploadDataset } from "../api/upload";
 
 function Upload() {
-
+  // Store selected file
   const [file, setFile] = useState(null);
 
+  // Store backend response
+  const [result, setResult] = useState(null);
+
+  // Runs when user selects a file
   const handleFileChange = (event) => {
     const selectedFile = event.target.files[0];
-
     setFile(selectedFile);
+  };
 
-    console.log(selectedFile);
+  // Runs when user clicks Upload
+  const handleUpload = async () => {
+    if (!file) {
+      alert("Please select a CSV file first.");
+      return;
+    }
+
+    try {
+      const response = await uploadDataset(file);
+
+      console.log(response);
+
+      setResult(response);
+
+      alert("Dataset uploaded successfully!");
+    } catch (error) {
+      console.error(error);
+      alert("Upload failed.");
+    }
   };
 
   return (
     <Layout>
-
       <div className="max-w-4xl mx-auto">
 
         <h1 className="text-4xl font-bold text-gray-800">
@@ -23,58 +45,75 @@ function Upload() {
         </h1>
 
         <p className="text-gray-500 mt-2">
-          Upload your CSV or Excel file for AI-powered analysis.
+          Upload your CSV file for AI-powered analysis.
         </p>
 
-        <div className="mt-10 border-2 border-dashed border-blue-400 rounded-xl p-12 bg-white">
+        <div className="mt-10 border-2 border-dashed border-blue-400 rounded-xl p-10 bg-white">
 
-          <div className="text-center">
+          <h2 className="text-2xl font-semibold">
+            📂 Choose Dataset
+          </h2>
 
-            <h2 className="text-2xl font-semibold">
-              📂 Choose Dataset
-            </h2>
+          <p className="text-gray-500 mt-2">
+            Supported formats: CSV
+          </p>
 
-            <p className="text-gray-500 mt-2">
-              Supported formats: CSV, XLSX
-            </p>
+          <input
+            type="file"
+            accept=".csv"
+            onChange={handleFileChange}
+            className="mt-6"
+          />
 
-            <input
-              type="file"
-              accept=".csv,.xlsx"
-              onChange={handleFileChange}
-              className="mt-6"
-            />
+          {file && (
+            <div className="mt-6">
+              <h3 className="text-green-600 font-semibold">
+                File Selected ✅
+              </h3>
 
-            {file && (
+              <p>
+                <strong>Name:</strong> {file.name}
+              </p>
 
-              <div className="mt-8">
+              <p>
+                <strong>Size:</strong>{" "}
+                {(file.size / 1024).toFixed(2)} KB
+              </p>
+            </div>
+          )}
 
-                <h3 className="text-xl font-semibold text-green-600">
-                  File Selected Successfully ✅
-                </h3>
+          <button
+            onClick={handleUpload}
+            className="mt-6 bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700"
+          >
+            Upload CSV
+          </button>
 
-                <p className="mt-2">
-                  <strong>Name:</strong> {file.name}
-                </p>
+          {result && (
+            <div className="mt-8 p-4 bg-green-100 rounded-lg">
 
-                <p>
-                  <strong>Size:</strong> {(file.size / 1024).toFixed(2)} KB
-                </p>
+              <h2 className="text-xl font-bold">
+                Dataset Uploaded Successfully ✅
+              </h2>
 
-                <p>
-                  <strong>Type:</strong> {file.type}
-                </p>
+              <p>
+                <strong>Filename:</strong> {result.filename}
+              </p>
 
-              </div>
+              <p>
+                <strong>Rows:</strong> {result.rows}
+              </p>
 
-            )}
+              <p>
+                <strong>Columns:</strong> {result.columns}
+              </p>
 
-          </div>
+            </div>
+          )}
 
         </div>
 
       </div>
-
     </Layout>
   );
 }
