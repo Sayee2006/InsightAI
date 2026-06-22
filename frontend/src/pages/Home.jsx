@@ -1,19 +1,16 @@
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
+import Layout from "../components/Layout";
 
 function Home() {
   return (
-    <>
-      <Navbar />
+    <Layout>
+      <h1 className="text-4xl font-bold">
+        Welcome to InsightAI 🚀
+      </h1>
 
-      <div style={{ display: "flex" }}>
-        <Sidebar />
-
-        <div style={{ padding: "20px" }}>
-          <h1>🏠 Home Page</h1>
-        </div>
-      </div>
-    </>
+      <p className="mt-4 text-gray-600">
+        AI Powered Data Analytics Platform
+      </p>
+    </Layout>
   );
 }
 

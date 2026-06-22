@@ -1,13 +1,11 @@
 function Navbar() {
   return (
-    <nav
-      style={{
-        backgroundColor: "#1976d2",
-        color: "white",
-        padding: "15px",
-      }}
-    >
-      <h2>InsightAI</h2>
+    <nav className="bg-blue-600 text-white h-16 flex items-center justify-between px-6 shadow-md">
+      <h1 className="text-2xl font-bold">
+        InsightAI
+      </h1>
+
+      <p>Welcome 👋</p>
     </nav>
   );
 }
