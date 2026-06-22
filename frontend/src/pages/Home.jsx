@@ -1,4 +1,5 @@
 import Layout from "../components/Layout";
+import app from "../services/firebase";
 
 function Home() {
   return (
